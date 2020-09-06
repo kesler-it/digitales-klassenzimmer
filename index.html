@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<title>Digitales Klassenzimmer</title>
+
+<meta charset="utf-8">
+
+<script src='https://meet.ffmuc.net/external_api.js'></script>
+<script src='js/dataexchange.js'></script>
+<script>
+const domain = "meet.ffmuc.net";
+let mode="greeter";
+
+let ytPlayer = null;
+let klID = null;
+let ytVideoId = null;
+let jitsiPlayer = null;
+let klName = null;
+
+function updateVisibilities() {
+	if (mode === "greeter") {
+		document.getElementById("greeter").style.display = "block";
+		document.getElementById("container").style.display = "none";
+	} else {
+		document.getElementById("greeter").style.display = "none";
+		document.getElementById("container").style.display = "block";
+	}
+}
+
+function onYouTubePlayerReady(event) {
+   console.log("Player Ready", event);
+   event.target.playVideo();
+}
+function onYouTubePlayerStateChange(event) {
+/*  if (event.data == YT.PlayerState.PLAYING && !done) {
+    setTimeout(stopVideo, 6000);
+    done = true;
+  }
+*/
+    if (event.data == YT.PlayerState.UNSTARTED) {
+   	event.target.playVideo();
+    }
+    console.log("ytPlayerStateChange", event);
+}
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('ytPane', {
+    width: (window.innerWidth / 2)-20,
+    height: window.innerHeight-90,
+    videoId: ytVideoId,
+    events: {
+      'onReady': onYouTubePlayerReady,
+      'onStateChange': onYouTubePlayerStateChange
+    },
+    playerVars: {
+	'autoplay': 1,
+	'origin': window.location.origin
+    }
+  });
+}
+
+function roomCallback(data) {
+	jsData = JSON.parse(data);
+	console.log(jsData);
+
+	if (jsData.error) {
+		alert(jsData.error);
+		// document.getElementById("klID").value = "";
+		mode="greeter";
+		updateVisibilities();
+		return;
+	}
+	if (jsData.ytLink) {
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		ytVideoId = jsData.ytLink;
+		mode = "youtube";
+	}
+
+	if (jsData.jitsiRoom) {
+		var tag = document.createElement('script');
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+		const options = {
+			roomName: jsData.jitsiRoom,
+			width:  (window.innerWidth / 2)-20,
+			height: window.innerHeight-90,
+			configOverwrite: { startWithAudioMuted: true, startWithVideoMuted: true },
+			parentNode: document.querySelector('#jitsiMeet')
+		};
+		const api = new JitsiMeetExternalAPI(domain, options);
+		console.log(api);
+		if (mode === "youtube") {
+			mode = "conference";
+		} else {
+			mode = "jitsi";
+		}
+	}
+	const labelKlID = document.getElementById("labelKlID");
+	if (jsData.klassenName) {
+		klName = jsData.klassenName;
+	}
+	if (klName) {
+		labelKlID.innerText = klName;
+	} else {
+		labelKlID.innerText = klID;
+	}
+
+	updateVisibilities()
+};
+function startRoom() {
+	klID = document.getElementById("klID").value;
+	console.log(klID);
+
+	if (klID == "") {
+		alert("Bitte Klassenzimmer-ID angeben");
+		return;
+	}
+
+	mode="loading";
+	updateVisibilities();
+	dataexchange("/api/room/" + klID + ".json", roomCallback);
+
+};
+
+
+</script>
+
+</head>
+<body>
+<h1 style="text-align: center; ">Digitales Klassenzimmer</h1>
+
+<div id="greeter" style="text-align: center; ">
+<p>Bitte geben Sie die Klassenzimmer-ID ein</p>
+<input id="klID" placeholder="Klassenzimmer-ID" />
+<button onclick="startRoom()" >Klassenzimmer starten</button>
+</div>
+
+<div id="container" style="display:none;" >
+<p style="text-align:center;">Klassenzimmer: <a id="labelKlID" /></p>
+<!-- youtube embedded -->
+<div id="ytPane" style="float: left;" ></div>
+
+<!-- jitsi embedded -->
+<div id="jitsiMeet" style="float: right;"></div>
+</div>
+</body>
+</html>
