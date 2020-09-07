@@ -46,7 +46,7 @@ function onYouTubePlayerStateChange(event) {
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player('ytPane', {
     width: (window.innerWidth / 2)-20,
-    height: window.innerHeight-90,
+    height: window.innerHeight-100,
     videoId: ytVideoId,
     events: {
       'onReady': onYouTubePlayerReady,
@@ -88,7 +88,7 @@ function roomCallback(data) {
 		const options = {
 			roomName: jsData.jitsiRoom,
 			width:  (window.innerWidth / 2)-20,
-			height: window.innerHeight-90,
+			height: window.innerHeight-100,
 			configOverwrite: { startWithAudioMuted: true, startWithVideoMuted: true },
 			parentNode: document.querySelector('#jitsiMeet')
 		};
@@ -132,7 +132,7 @@ function startRoom() {
 
 </head>
 <body>
-<h1 style="text-align: center; ">Digitales Klassenzimmer</h1>
+<h1 style="text-align: center; margin-bottom: 0px;">Digitales Klassenzimmer</h1>
 
 <div id="greeter" style="text-align: center; ">
 <p>Bitte geben Sie die Klassenzimmer-ID ein</p>
@@ -141,7 +141,7 @@ function startRoom() {
 </div>
 
 <div id="container" style="display:none;" >
-<p style="text-align:center;">Klassenzimmer: <a id="labelKlID" /></p>
+<p style="text-align:center; margin-top:0px;">Klassenzimmer: <a id="labelKlID" /></p>
 <!-- youtube embedded -->
 <div id="ytPane" style="float: left;" ></div>
 
