@@ -30,7 +30,7 @@
 				<img alt="Resize 25:75" src="images/50.50.png"></a>
 			<a href="javascript:" id="button-75-25" onclick="changeDia('75:25')">
 				<img alt="Resize 25:75" src="images/75.25.png"></a>
-			<a href="javascript:" id="button-100vid" onclick="changeDia('100-youtube')">
+			<a href="javascript:" id="button-100vid" onclick="changeDia('100-stream')">
 				<img alt="Resize 25:75" src="images/100-youtube.png"></a>
 			<a href="javascript:" id="button-100conf" onclick="changeDia('100-conf')">
 				<img alt="Resize 25:75" src="images/100-Conference.png"></a>
@@ -39,19 +39,15 @@
 			<p>Klassenzimmer: <a id="labelKlID"></a></p>
 		</div>
 
-		<!-- youtube embedded -->
 		<div id="splitter" class="splitter">
 			<div id="first">
-				<div id="ytPane" style="float: left;"></div>
+				<div id="video" style="float: left;"></div>
 			</div>
 			<div id="spacer" style="display:none"></div>
 			<div id="second">
 				<div id="jitsiMeet" style="float: right;"></div>
 			</div>
 		</div>
-
-		<!-- jitsi embedded -->
-
 	</div><!-- container -->
 	<script>
 		//dragElement( document.getElementById("separator"), "H" );
@@ -59,6 +55,12 @@
 			sizes: [50, 50],
 			minSize: 200,
 		})
+		window.onload = function () {
+			if (window.location.pathname.substr(1) != "") {
+				document.getElementById("klID").value = window.location.pathname.substr(1);
+				startRoom();
+			}
+		}
 	</script>
 </body>
 

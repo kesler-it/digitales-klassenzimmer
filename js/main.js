@@ -31,7 +31,7 @@ function onYouTubePlayerStateChange(event) {
 }
 
 function onYouTubeIframeAPIReady() {
-	ytPlayer = new YT.Player('ytPane', {
+	ytPlayer = new YT.Player('video', {
 		width: '100%',
 		height: '100%',
 		videoId: ytVideoId,
@@ -59,6 +59,12 @@ function roomCallback(data) {
 
 	if (jsData.vimeoID) {
 		// embed vimeo
+		vimeoID = jsData.vimeoID;
+		var tag = document.createElement('iframe');
+		tag.src = "https://vimeo.com/event/" + jsData.vimeoID + "/embed";
+		var firstScriptTag = document.getElementById('video');
+		firstScriptTag.insertBefore(tag, firstScriptTag);
+		mode = "stream";
 	} else if (jsData.ytLink) {
 		var tag = document.createElement('script');
 		tag.src = "https://www.youtube.com/iframe_api";
@@ -184,8 +190,8 @@ function changeDia(val) {
 			first.style.width = "50%";
 			second.style.width = "50%";
 		}
-
-	} else if (val == '100-stream') {
+	}
+	else if (val == '100-stream') {
 		if (vimeoID !== null) {
 			alert("vimeo not implemented");
 		} else if (ytVideoId !== null) {
