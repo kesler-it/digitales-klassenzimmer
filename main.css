@@ -1,0 +1,71 @@
+.splitter {
+  width: 100%;
+  display: flex;
+}
+
+#separator {
+  cursor: col-resize;
+  background-color: #aaa;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='black'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 10px;
+  height: 100%;
+
+  /* prevent browser's built-in drag from interfering */
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#first {
+  background-color: #dde;
+  width: 50%;
+  height: 100%;
+  min-width: 10px;
+  float: left;
+}
+
+#second {
+  background-color: #eee;
+  width: 50%;
+  height: 100%;
+  min-width: 10px;
+  float: left;
+}
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+.button-box {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 50%;
+  padding: 10px;
+  text-align: right;
+}
+#jitsiMeet {
+  height: 100%;
+  width: 100%;
+}
+#jitsiConferenceFrame0 {
+  height: 100%;
+  width: 100%;
+}
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+  background-color: #aaa;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='30'><path d='M2 0 v30 M5 0 v30 M8 0 v30' fill='none' stroke='black'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 10px;
+  height: 100%;
+}
+#spacer {
+  height: 5px;
+  background-color: #fff;
+  clear: both;
+}
