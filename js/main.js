@@ -16,6 +16,13 @@ function updateVisibilities() {
 		document.getElementById("greeter").style.display = "none";
 		document.getElementById("container").style.display = "block";
 	}
+	if (mode === "stream" || mode === "jitsi" || mode === "loading") {
+		// dont show separator in fullscreen mode
+		document.getElementsByClassName('gutter-horizontal')[0].style.display = "none";
+	} else if (mode === "conference") {
+		document.getElementsByClassName('gutter-horizontal')[0].style.display = "block";
+	}
+	
 	document.getElementById('splitter').style.height = (window.innerHeight-120) + "px";
 }
 
@@ -116,7 +123,6 @@ function startRoom() {
 	mode = "loading";
 	updateVisibilities();
 	dataexchange("api/room/" + klID + ".json", roomCallback);
-
 };
 
 // function is used for dragging and moving
@@ -168,25 +174,33 @@ function changeDia(val) {
 	const second = document.getElementById("second");
 	first.style.display = "block";
 	second.style.display = "block";
-	console.log(val);
+	console.log("changeDia", val);
 
 	document.getElementById("spacer").style.display = "none";
 	document.getElementById('splitter').style.display = "flex";
 	if (val == '25:75') {
+		mode = "conference";
+		updateVisibilities();
 		first.style.width = "25%";
 		second.style.width = "75%";
 	}
 	else if (val == '75:25') {
+		mode = "conference";
+		updateVisibilities();
 		first.style.width = "75%";
 		second.style.width = "25%";
 	}
 	else if (val == '50:50') {
 		if (screen.width <= 760) {
+			// dont show separator when screen is to small
+			document.getElementsByClassName('gutter-horizontal')[0].style.display = "none";
 			document.getElementById('splitter').style.display = "block"
 			document.getElementById("spacer").style.display = "block";
 			first.style.width = "100%";
 			second.style.width = "100%";
 		} else {
+			mode = "conference";
+			updateVisibilities();
 			first.style.width = "50%";
 			second.style.width = "50%";
 		}
@@ -199,6 +213,8 @@ function changeDia(val) {
 			ytPlayer.playVideo();
 		}
 
+		mode = "stream";
+		updateVisibilities();
 		first.style.width = "100%";
 		second.style.display = "none";
 		document.getElementById('splitter').style.display = "block";
@@ -210,45 +226,10 @@ function changeDia(val) {
 			console.log("Switch to jitsi only", ytPlayer);
 			ytPlayer.pauseVideo();
 		}
+		mode = "jitsi";
+		updateVisibilities();
 		first.style.display = "none";
 		second.style.width = "100%";
 		document.getElementById('splitter').style.display = "block";
 	}
 }
-var leftPane = document.getElementById('first');
-var rightPane = document.getElementById('second');
-var paneSep = document.getElementById('separator');
-
-// The script below constrains the target to move horizontally between a left and a right virtual boundaries.
-// - the left limit is positioned at 10% of the screen width
-// - the right limit is positioned at 90% of the screen width
-var leftLimit = 10;
-var rightLimit = 90;
-
-
-paneSep.sdrag(function (el, pageX, startX, pageY, startY, fix) {
-
-	fix.skipX = true;
-
-	if (pageX < window.innerWidth * leftLimit / 100) {
-		pageX = window.innerWidth * leftLimit / 100;
-		fix.pageX = pageX;
-	}
-	if (pageX > window.innerWidth * rightLimit / 100) {
-		pageX = window.innerWidth * rightLimit / 100;
-		fix.pageX = pageX;
-	}
-
-	var cur = pageX / window.innerWidth * 100;
-	if (cur < 0) {
-		cur = 0;
-	}
-	if (cur > window.innerWidth) {
-		cur = window.innerWidth;
-	}
-
-	var right = (100 - cur - 2);
-	leftPane.style.width = cur + '%';
-	rightPane.style.width = right + '%';
-
-}, null, 'horizontal');
