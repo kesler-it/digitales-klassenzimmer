@@ -16,7 +16,7 @@ function updateVisibilities() {
 		document.getElementById("greeter").style.display = "none";
 		document.getElementById("container").style.display = "block";
 	}
-	document.getElementById("splitter").style.height = (window.innerHeight-120) + "px";
+	document.getElementById('splitter').style.height = (window.innerHeight-120) + "px";
 }
 
 function onYouTubePlayerReady(event) {
@@ -160,13 +160,12 @@ function dragElement(element, direction) {
 function changeDia(val) {
 	const first = document.getElementById("first");
 	const second = document.getElementById("second");
-	document.getElementsByClassName('gutter-horizontal')[0].style.display = "block";
 	first.style.display = "block";
 	second.style.display = "block";
 	console.log(val);
 
 	document.getElementById("spacer").style.display = "none";
-	document.getElementsByClassName('splitter')[0].style.display = "flex";
+	document.getElementById('splitter').style.display = "flex";
 	if (val == '25:75') {
 		first.style.width = "25%";
 		second.style.width = "75%";
@@ -177,8 +176,7 @@ function changeDia(val) {
 	}
 	else if (val == '50:50') {
 		if (screen.width <= 760) {
-			document.getElementsByClassName('gutter-horizontal')[0].style.display = "none"
-			document.getElementsByClassName('splitter')[0].style.display = "block"
+			document.getElementById('splitter').style.display = "block"
 			document.getElementById("spacer").style.display = "block";
 			first.style.width = "100%";
 			second.style.width = "100%";
@@ -197,8 +195,7 @@ function changeDia(val) {
 
 		first.style.width = "100%";
 		second.style.display = "none";
-		document.getElementsByClassName('splitter')[0].style.display = "block";
-		document.getElementsByClassName('gutter-horizontal')[0].style.display = "none";
+		document.getElementById('splitter').style.display = "block";
 
 	} else if (val == '100-conf') {
 		if (vimeoID !== null) {
@@ -209,8 +206,7 @@ function changeDia(val) {
 		}
 		first.style.display = "none";
 		second.style.width = "100%";
-		document.getElementsByClassName('splitter')[0].style.display = "block";
-		document.getElementsByClassName('gutter-horizontal')[0].style.display = "none";
+		document.getElementById('splitter').style.display = "block";
 	}
 }
 var leftPane = document.getElementById('first');
