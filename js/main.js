@@ -68,10 +68,12 @@ function roomCallback(data) {
 		// embed vimeo
 		vimeoID = jsData.vimeoID;
 		var tag = document.createElement('iframe');
-		tag.src = "https://vimeo.com/event/" + jsData.vimeoID + "/embed";
+		tag.src = "https://player.vimeo.com/video/" + jsData.vimeoID + "?autoplay=1&transparent=0";
+		tag.allow = "autoplay; fullscreen"
+		tag.style = "top:0;left:0;width:100%;height:100%;";
+		tag.frameborder = "0";
 		var firstScriptTag = document.getElementById('video');
-		firstScriptTag.insertBefore(tag, firstScriptTag);
-		mode = "stream";
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 	} else if (jsData.ytLink) {
 		var tag = document.createElement('script');
 		tag.src = "https://www.youtube.com/iframe_api";
@@ -207,7 +209,8 @@ function changeDia(val) {
 	}
 	else if (val == '100-stream') {
 		if (vimeoID !== null) {
-			alert("vimeo not implemented");
+			// TODO: Start vimeo video
+			console.log("vimeo not implemented");
 		} else if (ytVideoId !== null) {
 			console.log("Switch to youtube only", ytPlayer);
 			ytPlayer.playVideo();
@@ -221,7 +224,8 @@ function changeDia(val) {
 
 	} else if (val == '100-conf') {
 		if (vimeoID !== null) {
-			alert("vimeo not implemented");
+			// TODO: Stop vimeo video
+			console.log("vimeo not implemented");
 		} else if (ytVideoId !== null) {
 			console.log("Switch to jitsi only", ytPlayer);
 			ytPlayer.pauseVideo();
