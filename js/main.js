@@ -74,6 +74,7 @@ function roomCallback(data) {
 		tag.frameborder = "0";
 		var firstScriptTag = document.getElementById('video');
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		mode = "stream";
 	} else if (jsData.ytLink) {
 		var tag = document.createElement('script');
 		tag.src = "https://www.youtube.com/iframe_api";
