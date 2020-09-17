@@ -57,7 +57,7 @@
 		})
 		window.onload = function () {
 			if (window.location.pathname.substr(1) != "") {
-				document.getElementById("klID").value = window.location.pathname.substr(1);
+				document.getElementById("klID").value = window.location.pathname.substr(1).toLowerCase();
 				startRoom();
 			}
 		}
